@@ -1,61 +1,145 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="vi">
   <head>
-    <meta charset="utf-8">
-    <title>Project V</title>
-<link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bản tin thiên tai</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div id="header">
-      <div class="container"></div>
-      <a id="header-title" href="index.html">Project V</a>
-      <ul id="header-nav">
-        <li><a href="about.html">About</a></li>
-        <li><a href="mailto:songha@ne.com">Contact</a></li>
-      </ul>
-    </div>
-    <div id="content">
-      <div class="post-container">
-        <div class="post">
-          <div class="post-author">
-            <img src="img/sh.jpg" alt="my profile photo">
-            <span>Me & my sidekick</span>
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="profile-card">
+          <div class="avatar">SH</div>
+          <div class="profile-info">
+            <p class="profile-subtitle">Chào mừng bạn trở lại</p>
+            <h1 class="profile-name">Song Hà</h1>
           </div>
-          <div class="post-date">18.04.2020</div>
-          <h3 class="post-title">Trying hard to defeat Super C</h3>
-          <p><strong>Lorem ipsum</strong> dolor sit amet, consectetur <strong><em>adipiscing</em></strong> elit.</p>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptate quidem totam, ex illum, facilis distinctio dolore! Dolorum nesciunt, non ipsa quod tenetur et magni corporis amet. Amet quis dicta, reprehenderit.</p>
-          <p>Quam nulla porttitor massa id <a href="https:apple.com">Apple</a> neque aliquam.</p>
+          <button class="secondary-btn">Xem báo cáo</button>
         </div>
-      </div>
-      <div class="post-container">
-        <div class="post">
-          <div class="post-author">
-            <img src="img/ri.jpg" alt="rieu">
-            <span>Kem Rieu</span>
+
+        <section class="sidebar-section">
+          <h2 class="sidebar-heading">Chuyên mục Việt Nam</h2>
+          <ol class="sidebar-list">
+            <li>Chính phủ Việt Nam yêu cầu siết chặt các quy hoạch dự án đô thị</li>
+            <li>Mưa lũ kéo dài khiến hàng nghìn hộ dân miền Trung bị cô lập</li>
+            <li>Các tổ chức xã hội kêu gọi hỗ trợ khẩn cấp cho đồng bào vùng cao</li>
+          </ol>
+        </section>
+
+        <section class="sidebar-section">
+          <h2 class="sidebar-heading">Chuyên mục quốc tế</h2>
+          <ol class="sidebar-list">
+            <li>Nhiều quốc gia tại châu Á đối mặt với thiên tai liên hoàn</li>
+            <li>Cộng đồng quốc tế chung tay chia sẻ nguồn lực cứu trợ</li>
+            <li>Các tổ chức nhân đạo triển khai chiến dịch viện trợ đặc biệt</li>
+          </ol>
+        </section>
+
+        <section class="sidebar-section">
+          <h2 class="sidebar-heading">Chủ đề chung</h2>
+          <ul class="tag-list">
+            <li class="tag">Ứng phó khẩn cấp</li>
+            <li class="tag">Tài trợ &amp; quyên góp</li>
+            <li class="tag">Khôi phục sau thiên tai</li>
+            <li class="tag">Cảnh báo thời tiết</li>
+          </ul>
+        </section>
+      </aside>
+
+      <main class="main-column">
+        <section class="action-card">
+          <div class="icon-circle">+</div>
+          <div class="action-content">
+            <p class="action-subtitle">Thêm báo cáo mới</p>
+            <h2 class="action-title">Chia sẻ thông tin khẩn cấp cùng cộng đồng</h2>
           </div>
-          <div class="post-date">19.04.2020</div>
-          <h3 class="post-title">Contra Super C Master Class</h3>
-            <p><strong><a href="https://contra.fandom.com/wiki/Super_Contra">Contra</a></strong> <em>Super C</em> is now destroyed by 2 of the world most powerful players.</p>
-            <iframe width="420" height="315" src="https://www.youtube.com/embed/mvS1Vk3nEK8" frameborder="0"></iframe>
-        </div>
-      </div>
-    <div id="footer">
-      <div class="container"></div>
-      <div class="column">
-        <h4>My Links</h4>
-        <p>
-          <a href="https:twitter.com/">Twitter</a>
-          <br>
-          <a href="https:facebook.com/songha">Facebook</a>
-        </p>
-      </div>
-      <div class="column">
-        <h4>My Story</h4>
-        <p>Struggling with money and love <br>
-          in mid-life crysis while playing video games
-        </p>
-      </div>
+          <button class="primary-btn">Tạo bài viết</button>
+        </section>
+
+        <section class="article-card">
+          <header class="article-header">
+            <div class="article-meta">
+              <span class="badge">Báo cáo trực tiếp</span>
+              <h2 class="article-title">Tiêu đề cụ thể của bài báo dài dòng và phức tạp</h2>
+              <p class="article-description">
+                Bão số 6 đổ bộ vào miền Trung Việt Nam, gây nhiều hệ lụy nghiêm trọng. Các địa phương đang triển khai phương án sơ tán, cứu trợ và cung cấp nhu yếu phẩm khẩn cấp cho người dân.
+              </p>
+            </div>
+            <div class="article-controls">
+              <button class="circle-btn" aria-label="Bài trước">&#10094;</button>
+              <button class="circle-btn" aria-label="Bài tiếp theo">&#10095;</button>
+            </div>
+          </header>
+
+          <div class="article-body">
+            <div class="article-text">
+              <p>
+                Hơn 5.000 người dân tại miền Trung Việt Nam, gồm phụ nữ, trẻ em và người già, đang cần hỗ trợ lương thực, nước sạch và thuốc men sau hai ngày bão đổ bộ. Các tuyến đường huyết mạch tại nhiều tỉnh thành hiện tê liệt.
+              </p>
+              <p>
+                Các lực lượng quân đội, công an, y tế và nhiều tổ chức thiện nguyện đang phối hợp tổ chức tìm kiếm cứu nạn, dựng nhà tạm và đưa người dân đến nơi an toàn. Các đoàn cứu trợ tiếp tục lên đường trong điều kiện thời tiết phức tạp.
+              </p>
+              <p class="article-footer">
+                Đăng bởi <strong>Trung tâm Điều phối Cứu hộ</strong> &bull; Cập nhật 20 phút trước &bull; 12 bình luận
+              </p>
+            </div>
+            <figure class="article-media">
+              <img src="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=870&q=80" alt="Lực lượng cứu hộ tại khu vực ngập lụt" />
+              <figcaption>Lực lượng cứu hộ hỗ trợ người dân tại Quảng Nam. Ảnh: TTXVN.</figcaption>
+            </figure>
+          </div>
+
+          <div class="article-progress">
+            <div class="progress-labels">
+              <span>03:54</span>
+              <span>08:14</span>
+            </div>
+            <div class="progress-bar">
+              <span style="width: 56%"></span>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <aside class="media-column">
+        <section class="video-card">
+          <img src="https://images.unsplash.com/photo-1502308493932-73b3b4d7b9b7?auto=format&fit=crop&w=900&q=80" alt="Thiệt hại sau bão" />
+          <div class="video-overlay">
+            <button class="play-btn" aria-label="Phát video">&#9658;</button>
+            <div class="video-info">
+              <p class="video-label">Phóng sự hiện trường</p>
+              <h3 class="video-title">Mưa lớn gây lũ quét tại nhiều tỉnh miền Trung</h3>
+            </div>
+            <span class="video-duration">03:14</span>
+          </div>
+        </section>
+
+        <section class="gallery-card">
+          <header class="gallery-header">
+            <div>
+              <h2>Ảnh hiện trường</h2>
+              <p>Cập nhật liên tục từ cộng tác viên địa phương</p>
+            </div>
+            <div class="filter-group">
+              <button class="filter-btn active">Tất cả</button>
+              <button class="filter-btn">Việt Nam</button>
+              <button class="filter-btn">Quốc tế</button>
+            </div>
+          </header>
+          <div class="gallery-grid">
+            <figure><img src="https://images.unsplash.com/photo-1470267365345-84a70833720d?auto=format&fit=crop&w=400&q=80" alt="Người dân dọn dẹp sau lũ" /></figure>
+            <figure><img src="https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=400&q=80" alt="Đường phố bị ngập sâu" /></figure>
+            <figure><img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=400&q=80" alt="Đội cứu hộ tại vùng cao" /></figure>
+            <figure><img src="https://images.unsplash.com/photo-1483721310020-03333e577078?auto=format&fit=crop&w=400&q=80" alt="Trung tâm cứu trợ tạm thời" /></figure>
+            <figure><img src="https://images.unsplash.com/photo-1483729558449-99ef09a8c325?auto=format&fit=crop&w=400&q=80" alt="Xe cứu thương trên đường" /></figure>
+            <figure><img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=400&q=80" alt="Tình nguyện viên phát nhu yếu phẩm" /></figure>
+          </div>
+        </section>
+      </aside>
     </div>
   </body>
 </html>
