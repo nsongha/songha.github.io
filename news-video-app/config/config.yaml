@@ -1,0 +1,112 @@
+# News Video App Configuration
+
+app:
+  name: "News Video Aggregator"
+  version: "1.0.0"
+  debug: true
+
+# News Sources - Top 3 Vietnamese News Sites
+news_sources:
+  - name: "VnExpress"
+    url: "https://vnexpress.net"
+    rss_feed: "https://vnexpress.net/rss/tin-moi-nhat.rss"
+    enabled: true
+  - name: "Tuoi Tre"
+    url: "https://tuoitre.vn"
+    rss_feed: "https://tuoitre.vn/rss/tin-moi-nhat.rss"
+    enabled: true
+  - name: "Thanh Nien"
+    url: "https://thanhnien.vn"
+    rss_feed: "https://thanhnien.vn/rss/home.rss"
+    enabled: true
+
+# Video Configuration
+video:
+  news_per_video: 7  # 5-10 news items
+  duration_per_image: 3  # seconds (min 2, max 5)
+  resolution:
+    width: 1920
+    height: 1080
+  fps: 30
+  codec: "libx264"
+  bitrate: "8000k"
+
+  # Ken Burns Effect directions
+  ken_burns_effects:
+    - "zoom_in"
+    - "zoom_out"
+    - "pan_left"
+    - "pan_right"
+    - "pan_up"
+    - "pan_down"
+
+# Audio Configuration
+audio:
+  tts_engine: "edge-tts"  # Options: edge-tts, gtts
+  voice: "vi-VN-HoaiMyNeural"  # Vietnamese voice
+  speech_rate: 1.0
+  background_music_volume: 0.15  # 15% volume
+
+# Assets Paths
+assets:
+  intro_video: "assets/intro/intro.mp4"
+  outro_video: "assets/outro/outro.mp4"
+  background_music: "assets/music/background.mp3"
+  logo: "assets/logo/logo.png"
+  watermark_position: "bottom_right"
+
+# Image Sources
+image_sources:
+  unsplash_api_key: "${UNSPLASH_API_KEY}"
+  pexels_api_key: "${PEXELS_API_KEY}"
+  fallback_search: true
+  min_resolution: 1920x1080
+
+# YouTube Configuration
+youtube:
+  channel_id: "${YOUTUBE_CHANNEL_ID}"
+  client_secrets_file: "config/client_secrets.json"
+  credentials_file: "config/youtube_credentials.json"
+
+  default_title: "Tin Tức Nổi Bật Ngày {date}"
+  default_description: |
+    Tổng hợp tin tức nổi bật trong ngày {date}
+
+    📰 Các tin chính:
+    {news_list}
+
+    #TinTuc #Vietnam #News
+
+  default_tags:
+    - "tin tức"
+    - "vietnam"
+    - "news"
+    - "thời sự"
+
+  category_id: "25"  # News & Politics
+  privacy_status: "public"  # public, unlisted, private
+
+# Scheduler Configuration
+scheduler:
+  enabled: true
+  daily_run_time: "18:00"  # 6 PM daily
+  timezone: "Asia/Ho_Chi_Minh"
+
+# Database Configuration
+database:
+  type: "sqlite"
+  path: "data/news_app.db"
+
+# Logging
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/app.log"
+
+# AI Script Generation
+ai:
+  provider: "openai"  # openai, anthropic, local
+  model: "gpt-4-turbo-preview"
+  api_key: "${OPENAI_API_KEY}"
+  temperature: 0.7
+  max_tokens: 2000

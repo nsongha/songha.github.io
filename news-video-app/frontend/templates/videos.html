@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Videos - News Video App{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>All Videos ({{ videos|length }})</h2>
+
+    {% if videos %}
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Status</th>
+                <th>Duration</th>
+                <th>Created</th>
+                <th>Uploaded</th>
+                <th>Views</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for video in videos %}
+            <tr>
+                <td>#{{ video.id }}</td>
+                <td>
+                    <a href="/video/{{ video.id }}" style="color: #667eea; text-decoration: none; font-weight: 500;">
+                        {{ video.title }}
+                    </a>
+                </td>
+                <td>
+                    {% if video.status == 'completed' %}
+                        <span class="badge badge-success">Completed</span>
+                    {% elif video.status == 'processing' %}
+                        <span class="badge badge-warning">Processing</span>
+                    {% elif video.status == 'failed' %}
+                        <span class="badge badge-danger">Failed</span>
+                    {% else %}
+                        <span class="badge badge-info">{{ video.status }}</span>
+                    {% endif %}
+                </td>
+                <td>{{ video.duration|duration }}</td>
+                <td>{{ video.created_date|datetime }}</td>
+                <td>
+                    {% if video.uploaded_to_youtube %}
+                        {{ video.upload_date|datetime }}
+                    {% else %}
+                        <span style="color: #999;">Not uploaded</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if video.views %}
+                        {{ "{:,}".format(video.views) }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+                <td>
+                    <div style="display: flex; gap: 8px;">
+                        <a href="/video/{{ video.id }}" class="btn" style="padding: 6px 12px; font-size: 12px; text-decoration: none;">
+                            View
+                        </a>
+                        {% if video.youtube_url %}
+                            <a href="{{ video.youtube_url }}" target="_blank" class="btn btn-danger" style="padding: 6px 12px; font-size: 12px; text-decoration: none;">
+                                YouTube
+                            </a>
+                        {% endif %}
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p style="text-align: center; padding: 40px; color: #999;">
+        No videos found. <a href="/" style="color: #667eea;">Create your first video</a>
+    </p>
+    {% endif %}
+</div>
+{% endblock %}

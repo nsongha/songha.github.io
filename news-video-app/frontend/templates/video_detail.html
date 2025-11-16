@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}{{ video.title }} - News Video App{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>{{ video.title }}</h2>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+        <div>
+            <p><strong>ID:</strong> #{{ video.id }}</p>
+            <p><strong>Status:</strong>
+                {% if video.status == 'completed' %}
+                    <span class="badge badge-success">Completed</span>
+                {% elif video.status == 'processing' %}
+                    <span class="badge badge-warning">Processing</span>
+                {% elif video.status == 'failed' %}
+                    <span class="badge badge-danger">Failed</span>
+                {% else %}
+                    <span class="badge badge-info">{{ video.status }}</span>
+                {% endif %}
+            </p>
+            <p><strong>Duration:</strong> {{ video.duration|duration }}</p>
+            <p><strong>Created:</strong> {{ video.created_date|datetime }}</p>
+        </div>
+        <div>
+            <p><strong>YouTube ID:</strong> {{ video.youtube_id or 'Not uploaded' }}</p>
+            <p><strong>Upload Date:</strong> {{ video.upload_date|datetime if video.upload_date else 'N/A' }}</p>
+            <p><strong>Views:</strong> {{ "{:,}".format(video.views) if video.views else '0' }}</p>
+            <p><strong>Likes:</strong> {{ "{:,}".format(video.likes) if video.likes else '0' }}</p>
+        </div>
+    </div>
+
+    {% if video.youtube_url %}
+    <div style="margin-top: 20px;">
+        <a href="{{ video.youtube_url }}" target="_blank" class="btn btn-danger">
+            ▶️ Watch on YouTube
+        </a>
+    </div>
+    {% endif %}
+
+    {% if video.description %}
+    <div style="margin-top: 25px;">
+        <h3 style="color: #667eea; margin-bottom: 10px;">Description</h3>
+        <p style="white-space: pre-wrap;">{{ video.description }}</p>
+    </div>
+    {% endif %}
+
+    <div style="margin-top: 25px;">
+        <h3 style="color: #667eea; margin-bottom: 10px;">File Paths</h3>
+        <p><strong>Video:</strong> <code style="background: #f7fafc; padding: 4px 8px; border-radius: 3px;">{{ video.video_path or 'N/A' }}</code></p>
+        <p><strong>Audio:</strong> <code style="background: #f7fafc; padding: 4px 8px; border-radius: 3px;">{{ video.audio_path or 'N/A' }}</code></p>
+        <p><strong>Thumbnail:</strong> <code style="background: #f7fafc; padding: 4px 8px; border-radius: 3px;">{{ video.thumbnail_path or 'N/A' }}</code></p>
+    </div>
+</div>
+
+{% if articles %}
+<div class="card">
+    <h2>News Articles in This Video ({{ articles|length }})</h2>
+
+    <div style="margin-top: 20px;">
+        {% for article in articles %}
+        <div style="border-left: 4px solid #667eea; padding: 15px; margin-bottom: 15px; background: #f7fafc;">
+            <h4 style="margin-bottom: 8px; color: #333;">{{ loop.index }}. {{ article.title }}</h4>
+            <p style="color: #666; font-size: 14px; margin-bottom: 8px;">
+                <strong>Source:</strong> {{ article.source }} |
+                <strong>Published:</strong> {{ article.published_date|datetime if article.published_date else 'Unknown' }}
+            </p>
+            {% if article.summary %}
+            <p style="color: #555; font-size: 14px;">{{ article.summary }}</p>
+            {% endif %}
+            <p style="margin-top: 8px;">
+                <a href="{{ article.url }}" target="_blank" style="color: #667eea; font-size: 13px;">Read original →</a>
+            </p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+<div style="margin-top: 20px;">
+    <a href="/videos" class="btn">← Back to Videos</a>
+</div>
+{% endblock %}

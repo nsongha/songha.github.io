@@ -1,0 +1,208 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - News Video App{% endblock %}
+
+{% block content %}
+<div class="stats">
+    <div class="stat-card">
+        <h3>Total Videos</h3>
+        <div class="value">{{ stats.total_videos }}</div>
+    </div>
+    <div class="stat-card">
+        <h3>Uploaded to YouTube</h3>
+        <div class="value">{{ stats.uploaded_videos }}</div>
+    </div>
+    <div class="stat-card">
+        <h3>Total Articles</h3>
+        <div class="value">{{ stats.total_articles }}</div>
+    </div>
+    <div class="stat-card">
+        <h3>Scheduler Status</h3>
+        <div class="value" style="font-size: 20px;">
+            {% if stats.scheduler_running %}
+                <span class="badge badge-success">RUNNING</span>
+            {% else %}
+                <span class="badge badge-danger">STOPPED</span>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h2>Quick Actions</h2>
+    <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-top: 15px;">
+        <button class="btn btn-success" onclick="createVideo()">
+            🎬 Create Video Now
+        </button>
+        <button class="btn" onclick="crawlNews()">
+            📡 Crawl News
+        </button>
+        <button class="btn" onclick="toggleScheduler()">
+            {% if stats.scheduler_running %}
+                ⏸️ Stop Scheduler
+            {% else %}
+                ▶️ Start Scheduler
+            {% endif %}
+        </button>
+    </div>
+</div>
+
+<div class="card">
+    <h2>Recent Videos</h2>
+    {% if videos %}
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Status</th>
+                <th>Duration</th>
+                <th>Created</th>
+                <th>YouTube</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for video in videos %}
+            <tr>
+                <td>#{{ video.id }}</td>
+                <td>
+                    <a href="/video/{{ video.id }}" style="color: #667eea; text-decoration: none;">
+                        {{ video.title[:60] }}{% if video.title|length > 60 %}...{% endif %}
+                    </a>
+                </td>
+                <td>
+                    {% if video.status == 'completed' %}
+                        <span class="badge badge-success">Completed</span>
+                    {% elif video.status == 'processing' %}
+                        <span class="badge badge-warning">Processing</span>
+                    {% elif video.status == 'failed' %}
+                        <span class="badge badge-danger">Failed</span>
+                    {% else %}
+                        <span class="badge badge-info">{{ video.status }}</span>
+                    {% endif %}
+                </td>
+                <td>{{ video.duration|duration }}</td>
+                <td>{{ video.created_date|datetime }}</td>
+                <td>
+                    {% if video.youtube_url %}
+                        <a href="{{ video.youtube_url }}" target="_blank" style="color: #f56565;">
+                            ▶️ Watch
+                        </a>
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+                <td>
+                    {% if not video.uploaded_to_youtube and video.status == 'completed' %}
+                        <button class="btn" style="padding: 6px 12px; font-size: 12px;"
+                                onclick="uploadVideo({{ video.id }})">
+                            Upload
+                        </button>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No videos yet. Create your first video!</p>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    async function createVideo() {
+        if (!confirm('Create a new daily video? This may take several minutes.')) {
+            return;
+        }
+
+        showLoading('Creating video... This may take 5-15 minutes. Please wait.');
+
+        try {
+            const result = await apiCall('/api/create-video', 'POST', { auto_upload: true });
+
+            hideLoading();
+
+            if (result.success) {
+                alert('Video created successfully!\n\n' +
+                      'Video ID: ' + result.video_id + '\n' +
+                      (result.video_url ? 'YouTube URL: ' + result.video_url : ''));
+                location.reload();
+            } else {
+                showError('Error creating video: ' + (result.error || 'Unknown error'));
+            }
+        } catch (error) {
+            hideLoading();
+            showError('Error: ' + error.message);
+        }
+    }
+
+    async function crawlNews() {
+        if (!confirm('Crawl news from all sources?')) {
+            return;
+        }
+
+        showLoading('Crawling news...');
+
+        try {
+            const result = await apiCall('/api/crawl-news', 'POST', { limit: 20 });
+
+            hideLoading();
+
+            if (result.success) {
+                alert('Crawled ' + result.articles_count + ' articles successfully!');
+                location.reload();
+            } else {
+                showError('Error crawling news: ' + (result.error || 'Unknown error'));
+            }
+        } catch (error) {
+            hideLoading();
+            showError('Error: ' + error.message);
+        }
+    }
+
+    async function toggleScheduler() {
+        const isRunning = {{ 'true' if stats.scheduler_running else 'false' }};
+        const action = isRunning ? 'stop' : 'start';
+
+        try {
+            const result = await apiCall('/api/scheduler/' + action, 'POST');
+
+            if (result.success) {
+                alert(result.message);
+                location.reload();
+            } else {
+                showError('Error: ' + (result.error || 'Unknown error'));
+            }
+        } catch (error) {
+            showError('Error: ' + error.message);
+        }
+    }
+
+    async function uploadVideo(videoId) {
+        if (!confirm('Upload this video to YouTube?')) {
+            return;
+        }
+
+        showLoading('Uploading to YouTube...');
+
+        try {
+            const result = await apiCall('/api/upload-video/' + videoId, 'POST');
+
+            hideLoading();
+
+            if (result.success) {
+                alert('Video uploaded to YouTube!\nURL: ' + result.result.url);
+                location.reload();
+            } else {
+                showError('Error uploading video: ' + (result.error || 'Unknown error'));
+            }
+        } catch (error) {
+            hideLoading();
+            showError('Error: ' + error.message);
+        }
+    }
+</script>
+{% endblock %}

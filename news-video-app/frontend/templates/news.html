@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}News Articles - News Video App{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>News Articles (Total: {{ "{:,}".format(total) }})</h2>
+
+    {% if articles %}
+    <div style="margin-top: 20px;">
+        {% for article in articles %}
+        <div style="border-left: 4px solid {% if article.selected_for_video %}#48bb78{% else %}#cbd5e0{% endif %}; padding: 15px; margin-bottom: 15px; background: #f7fafc;">
+            <h3 style="margin-bottom: 8px; color: #333;">
+                {{ article.title }}
+                {% if article.selected_for_video %}
+                    <span class="badge badge-success" style="margin-left: 10px;">Used in Video</span>
+                {% endif %}
+            </h3>
+
+            <p style="color: #666; font-size: 14px; margin-bottom: 8px;">
+                <strong>Source:</strong> {{ article.source }} |
+                <strong>Category:</strong> {{ article.category or 'General' }} |
+                <strong>Published:</strong> {{ article.published_date|datetime if article.published_date else 'Unknown' }} |
+                <strong>Crawled:</strong> {{ article.crawled_date|datetime }}
+            </p>
+
+            {% if article.summary %}
+            <p style="color: #555; margin-bottom: 10px;">{{ article.summary }}</p>
+            {% endif %}
+
+            {% if article.tags %}
+            <div style="margin-bottom: 10px;">
+                {% for tag in article.tags[:5] %}
+                    <span class="badge badge-info" style="margin-right: 5px;">{{ tag }}</span>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <div style="display: flex; gap: 15px; align-items: center;">
+                <a href="{{ article.url }}" target="_blank" style="color: #667eea; font-size: 14px; text-decoration: none;">
+                    Read original →
+                </a>
+                {% if article.image_url %}
+                    <a href="{{ article.image_url }}" target="_blank" style="color: #666; font-size: 14px; text-decoration: none;">
+                        🖼️ View image
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    <div style="margin-top: 30px; text-align: center;">
+        {% if page > 1 %}
+            <a href="/news?page={{ page - 1 }}" class="btn">← Previous</a>
+        {% endif %}
+
+        <span style="margin: 0 20px;">Page {{ page }} (Showing {{ articles|length }} of {{ "{:,}".format(total) }})</span>
+
+        {% if page * per_page < total %}
+            <a href="/news?page={{ page + 1 }}" class="btn">Next →</a>
+        {% endif %}
+    </div>
+
+    {% else %}
+    <p style="text-align: center; padding: 40px; color: #999;">
+        No news articles found. <a href="/" style="color: #667eea;">Crawl some news</a>
+    </p>
+    {% endif %}
+</div>
+{% endblock %}
