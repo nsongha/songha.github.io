@@ -1,8 +1,8 @@
 'use client';
 
 import { MainLayout } from '@/components/layout/main-layout';
-import { DashboardOverview } from '@/components/dashboard/dashboard-overview';
-import { AdminProjectsOverview } from '@/components/dashboard/admin-projects-overview';
+import { AdminDashboardNew } from '@/components/dashboard/admin-dashboard-new';
+import { ManagerDashboardNew } from '@/components/dashboard/manager-dashboard-new';
 import { useUserStore } from '@/lib/stores/user-store';
 
 export default function DashboardPage() {
@@ -10,17 +10,17 @@ export default function DashboardPage() {
 
   return (
     <MainLayout>
-      <div className="space-y-6">
+      <div className="space-y-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-          <p className="text-gray-600 mt-1">
+          <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
+          <p className="text-gray-600 text-sm mt-0.5">
             {currentUser.role === 'admin'
               ? 'Overview of all projects and team performance'
-              : 'Overview of all projects and tasks'}
+              : 'Manage projects and tasks'}
           </p>
         </div>
 
-        {currentUser.role === 'admin' ? <AdminProjectsOverview /> : <DashboardOverview />}
+        {currentUser.role === 'admin' ? <AdminDashboardNew /> : <ManagerDashboardNew />}
       </div>
     </MainLayout>
   );
