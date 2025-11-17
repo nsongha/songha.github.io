@@ -1,4 +1,4 @@
-import { Task, Project, User, TaskStatus, TaskPriority } from '@/lib/types';
+import { Task, Project, User, TaskStatus, TaskPriority, TaskComment } from '@/lib/types';
 
 // Mock users
 export const mockUsers: User[] = [
@@ -80,6 +80,17 @@ export const mockTasks: Task[] = [
     dueDate: new Date('2025-01-25'),
     createdAt: new Date('2025-01-11'),
     updatedAt: new Date('2025-01-20'),
+    comments: [
+      {
+        id: 'comment-1',
+        taskId: 'task-2',
+        userId: '2',
+        userName: 'Manager User',
+        userRole: 'manager',
+        content: 'Great progress! Make sure to test on mobile devices before wrapping up.',
+        createdAt: new Date('2025-01-20T10:30:00'),
+      },
+    ],
   },
   {
     id: 'task-3',
@@ -94,6 +105,18 @@ export const mockTasks: Task[] = [
     blockerReason: 'Waiting for DevOps team to provision server',
     createdAt: new Date('2025-01-12'),
     updatedAt: new Date('2025-01-18'),
+    comments: [
+      {
+        id: 'comment-2',
+        taskId: 'task-3',
+        userId: '2',
+        userName: 'Manager User',
+        userRole: 'manager',
+        content: 'I\'ve escalated this to the DevOps lead. Should get resources by tomorrow.',
+        link: 'https://devops.slack.com/archives/C01234567',
+        createdAt: new Date('2025-01-18T14:15:00'),
+      },
+    ],
   },
   {
     id: 'task-4',
@@ -120,6 +143,18 @@ export const mockTasks: Task[] = [
     dueDate: new Date('2025-01-28'),
     createdAt: new Date('2025-01-16'),
     updatedAt: new Date('2025-01-21'),
+    comments: [
+      {
+        id: 'comment-3',
+        taskId: 'task-5',
+        userId: '2',
+        userName: 'Manager User',
+        userRole: 'manager',
+        content: 'Looking good! Please follow the brand guidelines from the design system.',
+        link: 'https://figma.com/design-system',
+        createdAt: new Date('2025-01-21T09:00:00'),
+      },
+    ],
   },
   {
     id: 'task-6',
