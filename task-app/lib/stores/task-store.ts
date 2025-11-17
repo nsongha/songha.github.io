@@ -12,6 +12,9 @@ interface TaskStore {
   getTaskById: (id: string) => Task | undefined;
   getTasksByAssignee: (assigneeId: string) => Task[];
   addComment: (taskId: string, comment: Omit<TaskComment, 'id' | 'createdAt'>) => void;
+  requestUpdate: (taskId: string) => void;
+  clearUpdateRequest: (taskId: string) => void;
+  assignTask: (taskId: string, assigneeId: string, assigneeName: string) => void;
 }
 
 export const useTaskStore = create<TaskStore>((set, get) => ({
@@ -54,6 +57,8 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
             status,
             updatedAt: new Date(),
             completedAt: status === 'done' ? new Date() : undefined,
+            // Clear update request only if status actually changed
+            updateRequested: task.status === status ? task.updateRequested : false,
           }
         : task
     ),
@@ -84,6 +89,36 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
                 createdAt: new Date(),
               } as TaskComment,
             ],
+          }
+        : task
+    ),
+  })),
+
+  requestUpdate: (taskId) => set((state) => ({
+    tasks: state.tasks.map((task) =>
+      task.id === taskId
+        ? { ...task, updateRequested: true }
+        : task
+    ),
+  })),
+
+  clearUpdateRequest: (taskId) => set((state) => ({
+    tasks: state.tasks.map((task) =>
+      task.id === taskId
+        ? { ...task, updateRequested: false }
+        : task
+    ),
+  })),
+
+  assignTask: (taskId, assigneeId, assigneeName) => set((state) => ({
+    tasks: state.tasks.map((task) =>
+      task.id === taskId
+        ? {
+            ...task,
+            assigneeId,
+            assigneeName,
+            status: 'todo', // Move from pending to todo when assigned
+            updatedAt: new Date(),
           }
         : task
     ),

@@ -8,7 +8,7 @@ export interface User {
 }
 
 // Task types
-export type TaskStatus = 'todo' | 'in_progress' | 'done' | 'blocked';
+export type TaskStatus = 'pending' | 'todo' | 'in_progress' | 'done' | 'blocked';
 export type TaskPriority = 'low' | 'medium' | 'high';
 
 export interface TaskComment {
@@ -29,8 +29,8 @@ export interface Task {
   description?: string;
   status: TaskStatus;
   priority: TaskPriority;
-  assigneeId: string;
-  assigneeName: string;
+  assigneeId?: string; // Optional - unassigned tasks are pending
+  assigneeName?: string;
   projectId: string;
   dueDate?: Date;
   blockerReason?: string;
@@ -38,6 +38,8 @@ export interface Task {
   updatedAt: Date;
   completedAt?: Date;
   comments?: TaskComment[];
+  updateRequested?: boolean; // Admin requested update
+  aiGenerated?: boolean; // Task was AI-suggested
 }
 
 // Project types
@@ -87,4 +89,30 @@ export interface WeeklyReport {
   completionRate: number;
   blockers: Task[];
   velocity: number;
+}
+
+// AI Analysis types
+export interface AIProjectAnalysis {
+  projectId: string;
+  summary: string;
+  healthScore: number; // 0-100
+  onTrack: boolean;
+  risks: string[];
+  missingSteps: string[];
+  overloadedMembers: {
+    userId: string;
+    userName: string;
+    taskCount: number;
+    reason: string;
+  }[];
+  recommendations: string[];
+  generatedAt: Date;
+}
+
+export interface AISuggestedTask {
+  title: string;
+  description: string;
+  priority: TaskPriority;
+  estimatedDays?: number;
+  dependencies?: string[];
 }
