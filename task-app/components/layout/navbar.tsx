@@ -4,15 +4,26 @@ import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-
-const navItems = [
-  { href: '/dashboard', label: 'Dashboard', icon: '📊' },
-  { href: '/tasks', label: 'Tasks', icon: '✓' },
-  { href: '/daily-report', label: 'Daily Report', icon: '📝' },
-];
+import { RoleSwitcher } from './role-switcher';
+import { useUserStore } from '@/lib/stores/user-store';
 
 export const Navbar: React.FC = () => {
   const pathname = usePathname();
+  const { currentUser } = useUserStore();
+
+  // Navigation items based on role
+  const getNavItems = () => {
+    const baseItems = [
+      { href: '/dashboard', label: 'Dashboard', icon: '📊', roles: ['admin', 'manager'] },
+      { href: '/tasks', label: 'Tasks', icon: '✓', roles: ['manager'] },
+      { href: '/my-tasks', label: 'My Tasks', icon: '📋', roles: ['member'] },
+      { href: '/daily-report', label: 'Daily Report', icon: '📝', roles: ['manager', 'member'] },
+    ];
+
+    return baseItems.filter((item) => item.roles.includes(currentUser.role));
+  };
+
+  const navItems = getNavItems();
 
   return (
     <nav className="bg-white border-b border-gray-200">
@@ -42,14 +53,17 @@ export const Navbar: React.FC = () => {
             })}
           </div>
 
-          {/* User Menu */}
-          <div className="flex items-center gap-3">
-            <div className="text-right">
-              <p className="text-sm font-medium text-gray-900">Admin User</p>
-              <p className="text-xs text-gray-500">admin@company.com</p>
-            </div>
-            <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-medium">
-              A
+          {/* Right side: Role Switcher + User Info */}
+          <div className="flex items-center gap-4">
+            <RoleSwitcher />
+            <div className="flex items-center gap-3">
+              <div className="text-right">
+                <p className="text-sm font-medium text-gray-900">{currentUser.name}</p>
+                <p className="text-xs text-gray-500">{currentUser.email}</p>
+              </div>
+              <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-medium">
+                {currentUser.name.charAt(0)}
+              </div>
             </div>
           </div>
         </div>

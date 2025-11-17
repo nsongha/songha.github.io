@@ -11,6 +11,18 @@ export interface User {
 export type TaskStatus = 'todo' | 'in_progress' | 'done' | 'blocked';
 export type TaskPriority = 'low' | 'medium' | 'high';
 
+export interface TaskComment {
+  id: string;
+  taskId: string;
+  userId: string;
+  userName: string;
+  userRole: 'admin' | 'manager' | 'member';
+  content: string;
+  link?: string;
+  imageUrl?: string;
+  createdAt: Date;
+}
+
 export interface Task {
   id: string;
   title: string;
@@ -25,6 +37,7 @@ export interface Task {
   createdAt: Date;
   updatedAt: Date;
   completedAt?: Date;
+  comments?: TaskComment[];
 }
 
 // Project types

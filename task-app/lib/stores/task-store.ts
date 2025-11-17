@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { Task, TaskStatus, TaskPriority } from '@/lib/types';
+import { Task, TaskStatus, TaskPriority, TaskComment } from '@/lib/types';
 import { mockTasks } from '@/lib/utils/mock-data';
 
 interface TaskStore {
@@ -10,6 +10,8 @@ interface TaskStore {
   updateTaskStatus: (id: string, status: TaskStatus) => void;
   getTasksByStatus: (status: TaskStatus) => Task[];
   getTaskById: (id: string) => Task | undefined;
+  getTasksByAssignee: (assigneeId: string) => Task[];
+  addComment: (taskId: string, comment: Omit<TaskComment, 'id' | 'createdAt'>) => void;
 }
 
 export const useTaskStore = create<TaskStore>((set, get) => ({
@@ -64,4 +66,26 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
   getTaskById: (id) => {
     return get().tasks.find((task) => task.id === id);
   },
+
+  getTasksByAssignee: (assigneeId) => {
+    return get().tasks.filter((task) => task.assigneeId === assigneeId);
+  },
+
+  addComment: (taskId, comment) => set((state) => ({
+    tasks: state.tasks.map((task) =>
+      task.id === taskId
+        ? {
+            ...task,
+            comments: [
+              ...(task.comments || []),
+              {
+                ...comment,
+                id: `comment-${Date.now()}`,
+                createdAt: new Date(),
+              } as TaskComment,
+            ],
+          }
+        : task
+    ),
+  })),
 }));
