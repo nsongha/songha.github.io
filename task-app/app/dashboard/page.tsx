@@ -1,8 +1,8 @@
 'use client';
 
 import { MainLayout } from '@/components/layout/main-layout';
-import { AdminDashboardNew } from '@/components/dashboard/admin-dashboard-new';
-import { ManagerDashboardNew } from '@/components/dashboard/manager-dashboard-new';
+import { AdminViewWithAI } from '@/components/dashboard/admin-view-with-ai';
+import { ManagerViewUpdated } from '@/components/manager/manager-view-updated';
 import { useUserStore } from '@/lib/stores/user-store';
 
 export default function DashboardPage() {
@@ -20,7 +20,7 @@ export default function DashboardPage() {
           </p>
         </div>
 
-        {currentUser.role === 'admin' ? <AdminDashboardNew /> : <ManagerDashboardNew />}
+        {currentUser.role === 'admin' ? <AdminViewWithAI /> : <ManagerViewUpdated />}
       </div>
     </MainLayout>
   );
